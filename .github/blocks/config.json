@@ -1,0 +1,14 @@
+{
+  "allow": [
+    {
+      "owner": "githubnext",
+      "repo": "blocks-examples",
+      "id": "markdown-block"
+    },
+    {
+      "owner": "jaked",
+      "repo": "rich-text-markdown-block",
+      "id": "rich-text-markdown-block"
+    }
+  ]
+}
