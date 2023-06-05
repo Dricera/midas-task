@@ -1,5 +1,7 @@
 import { atom, useRecoilState } from 'recoil'
-
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import  Typography  from '@mui/material/Typography'
 const Test = () => {
 	
 	const countState = atom({
@@ -9,14 +11,17 @@ const Test = () => {
 	const [count, setCount] = useRecoilState(countState)
 
 	return (
-		<>
-			<h2>  Test</h2>
-			<div className="card">
-				<button onClick={() => setCount((count) => count = count + 2)}>
+		<Container maxWidth="md">
+			<Typography component="h4" variant='h4'  align='center'>
+				Test
+			</Typography>
+			<Button
+				variant="contained"
+				color="primary"
+				onClick={() => setCount((count) => count = count + 2)}>
 					count is {count}
-				</button>
-			</div>
-		</>
+				</Button>
+			</Container>
 	)
 }
 export default Test

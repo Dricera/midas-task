@@ -1,29 +1,44 @@
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import Test from './components/Test'
+// import './App.css'
+
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { RecoilRoot } from 'recoil'
 import { RecoilEnv } from 'recoil'
+
+import Test from './components/Test'
+import Index from './pages/Index'
+import Login from './pages/Login'
+import Signup from './pages/Signup';
+import Header from './components/Header'
+import Footer from './components/Footer'
+import { Container, CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+
 RecoilEnv.RECOIL_DUPLICATE_ATOM_KEY_CHECKING_ENABLED = false
 
 function App() {
-  const PlaceHolder = () => {
-    return(
-    <div>
-      <a href="https://vitejs.dev" target="_blank">
-        <img src={viteLogo} className="logo" alt="Vite logo" />
-      </a>
-      <a href="https://react.dev" target="_blank">
-        <img src={reactLogo} className="logo react" alt="React logo" />
-      </a>
-      <h1>Vite + React</h1>
-    </div>
-    )}
+  const defaultTheme = createTheme();
+
   return (
+
     <RecoilRoot>
-      <PlaceHolder />
-      <Test />
+      <BrowserRouter basename="/">
+        <ThemeProvider theme={defaultTheme}>
+          <CssBaseline />
+          <Container maxWidth="lg" disableGutters>
+            <Header />
+
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/test" element={<Test />} />
+            </Routes>
+
+            <Footer />
+          </Container>
+        </ThemeProvider>
+      </BrowserRouter>
     </RecoilRoot>
+
   )
 }
 
