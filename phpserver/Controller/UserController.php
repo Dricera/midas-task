@@ -4,7 +4,34 @@ class UserController extends BaseController
     /** 
 * "/user/list" Endpoint - Get list of users 
 */
-    public function listAction()
+
+    public function listAction(){
+
+        $strErrorDesc = '';
+        $requestMethod = $_SERVER["REQUEST_METHOD"];
+        if (strtoupper($requestMethod) == 'GET') {
+            try{
+                $userModel = new UserModel();
+                $arrUsers = $userModel->listUsers();
+                $responseData = json_encode($arrUsers);
+
+            } catch (Error $e) {
+                $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
+                $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';
+            }
+        }
+        if (!$strErrorDesc) {
+            $this->sendOutput(
+                $responseData,
+                array('Content-Type: application/json', 'HTTP/1.1 200 OK')
+            );
+        } else {
+            $this->sendOutput(json_encode(array('error' => $strErrorDesc)), 
+                array('Content-Type: application/json', $strErrorHeader)
+            );
+        }
+    }
+    public function getAction()
     {
         $strErrorDesc = '';
         $requestMethod = $_SERVER["REQUEST_METHOD"];
@@ -12,12 +39,13 @@ class UserController extends BaseController
         if (strtoupper($requestMethod) == 'GET') {
             try {
                 $userModel = new UserModel();
-                $intLimit = 10;
-                if (isset($arrQueryStringParams['limit']) && $arrQueryStringParams['limit']) {
-                    $intLimit = $arrQueryStringParams['limit'];
+                $intId=0;
+                if (isset($arrQueryStringParams['id'])) {
+                    $intId = $arrQueryStringParams['id'];
                 }
-                $arrUsers = $userModel->getUsers($intLimit);
+                $arrUsers = $userModel->getUser($intId);
                 $responseData = json_encode($arrUsers);
+                
             } catch (Error $e) {
                 $strErrorDesc = $e->getMessage().'Something went wrong! Please contact support.';
                 $strErrorHeader = 'HTTP/1.1 500 Internal Server Error';

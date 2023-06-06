@@ -2,10 +2,16 @@
 require_once PROJECT_ROOT_PATH . "/Model/Database.php";
 class UserModel extends Database
 {
-    public function getUsers($limit)
+    public function getUser($id)
+    {        //return error when invalid id
+        if ($id == null || $id == '' || $id == 0) {
+            return array('error' => 'Invalid user id.');
+        }
+        return $this->select("SELECT * FROM users WHERE user_id=$id" );
+    }
+
+    public function listUsers()
     {
-		if($limit == null || $limit == '' || $limit == 0)
-		return $this->select("SELECT * FROM users ORDER BY user_id ASC");
-        return $this->select("SELECT * FROM users ORDER BY user_id ASC LIMIT ?", ["i", $limit]);
+        return $this->select("SELECT * FROM users ORDER BY user_id ASC");
     }
 }
