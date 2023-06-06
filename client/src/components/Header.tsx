@@ -16,7 +16,7 @@ const Header = () => {
 		return null;
 	}
 
-	const routeMatch = useRouteMatch(['/login', '/signup', '/test', '/']);
+	const routeMatch = useRouteMatch(['/','/login', '/signup', '/test', '/post/:id']);
 	const currentTab = routeMatch?.pattern?.path;
 	return (
 		<React.Fragment>
@@ -34,6 +34,7 @@ const Header = () => {
 					<Tab label="Login" component={Nav} value="/login" to="/login"></Tab>
 					<Tab label="Signup" component={Nav} value="/signup" to="/signup"></Tab>
 					<Tab label="Test" component={Nav} value="/test" to="/test"></Tab>
+					<Tab label="Post" component={Nav} value="/post/:id" to="/post/1"></Tab>
 				</Tabs>
 			</Toolbar>
 		</React.Fragment>

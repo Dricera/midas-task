@@ -10,7 +10,7 @@ const Footer = () => {
       component="footer"
       sx={{
         // position: 'fixed',
-        py: 3,
+        py: 2,
         // px: 2,
         mt: 'auto',
         bgcolor: 'background.primary',
@@ -19,7 +19,7 @@ const Footer = () => {
     >
       <Container maxWidth={false}>
         <Typography variant="body1" align="center" gutterBottom>
-          Footer Placeholder.
+        Made with ❤️ by <a href="https://github.com/Dricera" target='_blank'>Dricera</a>
         </Typography>
 
       </Container>
