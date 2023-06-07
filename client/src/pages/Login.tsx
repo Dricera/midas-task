@@ -1,5 +1,6 @@
 import { Box, Button, Container, Divider, Link, TextField, Typography } from '@mui/material'
 import { Link as Nav } from  'react-router-dom'
+import { login } from '../helpers/apis';
 
 const Login = () => {
 
@@ -7,10 +8,16 @@ const Login = () => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget)
 		// Login API Call logic
-		console.log({
+		const loginBody={
 			email: data.get('email'),
 			password: data.get('password'),
-		});
+		};
+		try {
+			//api call will go here
+			console.log(loginBody)
+		} catch (error) {
+			console.log(error)
+		}
 		
 	};
 
