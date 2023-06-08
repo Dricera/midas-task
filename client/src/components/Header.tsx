@@ -1,11 +1,24 @@
-import { Link as Nav, matchPath, useLocation } from "react-router-dom"
-import { Toolbar, Tabs, Tab, Typography } from '@mui/material/'
-import React from "react";
+import { Link as Nav, matchPath, useLocation, useNavigate } from "react-router-dom"
+import { Toolbar, Tabs, Tab, Typography, Grid, Link, AppBar } from '@mui/material/'
 
+import { useRecoilValue, useResetRecoilState } from "recoil"
+import { authState } from "../helpers/atoms"
+import React from "react"
 const Header = () => {
+
+	const currentUser = useRecoilValue(authState)
+	console.log(currentUser.data)
+	const resetState = useResetRecoilState(authState)
+	const isLoggedIn: boolean = localStorage.getItem('authToken') ? true : false;
+	const navigate = useNavigate();
+	const logout = () => {
+		localStorage.removeItem('authToken')
+		resetState()
+		navigate('/login')
+	}
+
 	function useRouteMatch(patterns: readonly string[]) {
 		const { pathname } = useLocation();
-
 		for (let i = 0; i < patterns.length; i += 1) {
 			const pattern = patterns[i];
 			const possibleMatch = matchPath(pattern, pathname);
@@ -16,29 +29,42 @@ const Header = () => {
 		return null;
 	}
 
-	const routeMatch = useRouteMatch(['/','/login', '/signup', '/test', '/post/:id', '/create']);
+	const routeMatch = useRouteMatch(['/', '/login', '/signup', '/test', '/post/:id', '/create']);
 	const currentTab = routeMatch?.pattern?.path;
 	return (
 		<React.Fragment>
 
-			<Typography component="h2" variant="h3" align="center">Blog</Typography>
+			<Typography component="h2" variant="h3" align="left" sx={{ p: "1rem" }}>The Blog</Typography>
+			{/* print current  user if currentUser  is not empty object*/}
 
-			<Toolbar component="nav" variant="dense"
-				sx={{
-					borderBottom: 1,
-					justifyContent: 'space-between',
-					overflowX: 'auto',
-				}}>
-				<Tabs value={currentTab}>
-					<Tab label="Home" component={Nav} value="/" to="/"></Tab>
-					<Tab label="Login" component={Nav} value="/login" to="/login"></Tab>
-					<Tab label="Signup" component={Nav} value="/signup" to="/signup"></Tab>
-					<Tab label="Test" component={Nav} value="/test" to="/test"></Tab>
-					<Tab label="Post" component={Nav} value="/post/:id" to="/post/1"></Tab>
-					<Tab label="Create" component={Nav} value="/create" to="/create"></Tab>
-				</Tabs>
-			</Toolbar>
-		</React.Fragment>
+
+
+
+			<AppBar position="static" color="transparent" >
+				<Toolbar component="nav" variant="dense"
+					sx={{
+						borderBottom: 1,
+						justifyContent: 'space-between',
+						overflowX: 'auto',
+					}}>
+					{/* <Grid container spacing={0} justifyContent="right"> */}
+					{currentUser && Object.keys(currentUser).length !== 0 && <Typography variant="h6" sx={{ flexGrow: 1 }}>Welcome, {currentUser.data.name}</Typography>}
+					
+						<Tab label="Home" component={Nav} value="/" to="/"></Tab>
+						<Tab label="Signup" component={Nav} value="/signup" to="/signup"></Tab>
+						<Tab label="Test" component={Nav} value="/test" to="/test"></Tab>
+						<Tab label="Post" component={Nav} value="/post/:id" to="/post/1"></Tab>
+						<Tab label="Create" component={Nav} value="/create" to="/create"></Tab>
+						{!isLoggedIn ?
+							(<Tab label="Login" component={Nav} value="/login" to="/login"></Tab>) :
+							// (<Typography variant="h6" align="center">Welcome {currentUser}</Typography>)}
+							/* {isLoggedIn && */
+							(<Tab label="Logout" component={Link} value="/logout" onClick={logout} sx={{ fontWeight: "bold" }}></Tab>)
+					}
+					
+				</Toolbar>
+			</AppBar>
+		</React.Fragment >
 	)
 }
 

@@ -1,24 +1,44 @@
 import { Box, Button, Container, Divider, Link, TextField, Typography } from '@mui/material'
-import { Link as Nav } from  'react-router-dom'
-import { login } from '../helpers/apis';
-
+import { Link as Nav, useNavigate } from 'react-router-dom'
+import { userLogin, setAuthToken } from '../helpers/apis';
+import { authState } from '../helpers/atoms';
+import { useSetRecoilState } from 'recoil';
+import jwt_decode from 'jwt-decode';
 const Login = () => {
 
+
+	const navigate = useNavigate();
+	const setAuthState=useSetRecoilState(authState)
 	const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 		const data = new FormData(event.currentTarget)
+
 		// Login API Call logic
-		const loginBody={
+		const loginBody = {
 			email: data.get('email'),
 			password: data.get('password'),
 		};
 		try {
 			//api call will go here
-			console.log(loginBody)
+			userLogin(loginBody).then((response) => {
+				const token = JSON.parse(response.data).jwt;
+				localStorage.setItem('authToken', token);
+				setAuthToken(token)
+				const decodedToken:object=jwt_decode(token)
+				
+				setAuthState(decodedToken)
+				
+				console.log(response.data);
+
+			})
+			navigate('/')
+			// redirect to home page
+
+
 		} catch (error) {
 			console.log(error)
 		}
-		
+
 	};
 
 
