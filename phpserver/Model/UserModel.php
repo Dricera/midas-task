@@ -11,7 +11,7 @@ class UserModel extends Database
         if ($id == null || $id == '' || $id == 0) {
             return array('error' => 'Invalid user id.');
         }
-        return $this->select("SELECT * FROM users WHERE user_id=$id");
+        return $this->select("SELECT user_id,user_name,user_email,user_role FROM users WHERE user_id=$id");
     }
 
     public function listUsers()

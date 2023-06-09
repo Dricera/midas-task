@@ -1,5 +1,5 @@
 import { Link as Nav, matchPath, useLocation, useNavigate } from "react-router-dom"
-import { Toolbar, Tabs, Tab, Typography, Grid, Link, AppBar } from '@mui/material/'
+import { Toolbar, Tabs, Tab, Typography, Grid, Link, AppBar, linkClasses } from '@mui/material/'
 
 import { useRecoilValue, useResetRecoilState } from "recoil"
 import { authState } from "../helpers/atoms"
@@ -7,12 +7,17 @@ import React from "react"
 const Header = () => {
 
 	const currentUser = useRecoilValue(authState)
-	console.log(currentUser.data)
+	// console.log('currentuserdata',currentUser.data)
+
 	const resetState = useResetRecoilState(authState)
-	const isLoggedIn: boolean = localStorage.getItem('authToken') ? true : false;
+	const authToken:string = localStorage.getItem('authToken')??''
+	let isLoggedIn = false;
+	if (authToken.length>3) { isLoggedIn = true }
+	console.log('isLoggedIn', isLoggedIn)
 	const navigate = useNavigate();
 	const logout = () => {
 		localStorage.removeItem('authToken')
+		localStorage.removeItem('user')
 		resetState()
 		navigate('/login')
 	}
@@ -30,7 +35,7 @@ const Header = () => {
 	}
 
 	const routeMatch = useRouteMatch(['/', '/login', '/signup', '/test', '/post/:id', '/create']);
-	const currentTab = routeMatch?.pattern?.path;
+	// const currentTab = routeMatch?.pattern?.path;
 	return (
 		<React.Fragment>
 
@@ -51,15 +56,16 @@ const Header = () => {
 					{currentUser && Object.keys(currentUser).length !== 0 && <Typography variant="h6" sx={{ flexGrow: 1 }}>Welcome, {currentUser.data.name}</Typography>}
 					
 						<Tab label="Home" component={Nav} value="/" to="/"></Tab>
-						<Tab label="Signup" component={Nav} value="/signup" to="/signup"></Tab>
+						
 						<Tab label="Test" component={Nav} value="/test" to="/test"></Tab>
 						<Tab label="Post" component={Nav} value="/post/:id" to="/post/1"></Tab>
 						<Tab label="Create" component={Nav} value="/create" to="/create"></Tab>
 						{!isLoggedIn ?
 							(<Tab label="Login" component={Nav} value="/login" to="/login"></Tab>) :
+
 							// (<Typography variant="h6" align="center">Welcome {currentUser}</Typography>)}
 							/* {isLoggedIn && */
-							(<Tab label="Logout" component={Link} value="/logout" onClick={logout} sx={{ fontWeight: "bold" }}></Tab>)
+							(<Tab label="Logout" component={Link} value="/logout" onClick={logout} sx={{ fontWeight: "bold", }}></Tab>)
 					}
 					
 				</Toolbar>

@@ -3,7 +3,6 @@ import { Link as Nav, useNavigate } from 'react-router-dom'
 import { userLogin, setAuthToken } from '../helpers/apis';
 import { authState } from '../helpers/atoms';
 import { useSetRecoilState } from 'recoil';
-import jwt_decode from 'jwt-decode';
 const Login = () => {
 
 
@@ -23,9 +22,9 @@ const Login = () => {
 			userLogin(loginBody).then((response) => {
 				const token = JSON.parse(response.data).jwt;
 				localStorage.setItem('authToken', token);
-				setAuthToken(token)
-				const decodedToken:object=jwt_decode(token)
 				
+				const decodedToken:object=setAuthToken(token)
+				localStorage.setItem('user', JSON.stringify(decodedToken))
 				setAuthState(decodedToken)
 				
 				console.log(response.data);
@@ -58,7 +57,7 @@ const Login = () => {
 				<Typography component="h1" variant="h5">
 					Sign in
 				</Typography>
-				<Divider variant="fullWidth">o </Divider>
+				<Divider variant="fullWidth" >~ </Divider>
 				<Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
 					<TextField
 						margin="normal"
@@ -91,8 +90,8 @@ const Login = () => {
 					>
 						Sign In
 					</Button>
-					<Typography component={'span'} variant={'body2'} align={'center'}>
-						Don't have an account? <Link component={Nav} to="/signup">Sign Up</Link>
+					<Typography component={'div'} variant={'body2'} align={'center'}>
+						Don't have an account? <Link component={Nav} to="/signup" sx={{fontWeight:"bold",fontSize:"1rem",placeItems:"center"}}>Sign Up</Link>
 					</Typography>
 
 				</Box>

@@ -30,7 +30,9 @@ class BaseController
 			return array();
 		}
 		
-        return parse_str($_SERVER['QUERY_STRING'], $query);
+        // return parse_str($_SERVER['QUERY_STRING'], $query);
+         parse_str($_SERVER['QUERY_STRING'], $query);
+        return $query;
     }
     /** 
 * Send API output. 

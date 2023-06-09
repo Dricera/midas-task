@@ -12,7 +12,8 @@ import { createPost } from "../helpers/apis"
 
 
 import parse from 'html-react-parser';
-import { encode as base64_encode, decode as base64_decode } from 'base-64';
+import { encode as base64_encode, decode as base64_decode, encode } from 'base-64';
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -20,22 +21,30 @@ const Create = () => {
 
 
 	// const [post, createPost] = useRecoilState(postState)
+
+	const navigate = useNavigate()
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		const data = new FormData(e.currentTarget)
+
+		const userData = JSON.parse(localStorage.getItem('user'))
 		const post = {
 			title: data.get('postTitle'),
-			body: data.get('postBody'),
+			content: contentDisplay,
 			category: data.get('postCategory'),
-			createdDate: new Date(Date.now().toLocaleString()),
+			author: userData.data.id
 		}
 		try {
 			//api call will go here
 			console.log(post)
+			const response = await createPost(post)
+			console.log(response, 'response');
+			Navigate('/')
 		} catch (error) {
 			console.log(error)
 		}
 	}
+
 
 
 	const modules = {
@@ -58,13 +67,13 @@ const Create = () => {
 	})
 
 	const [contentDisplay, setcontentDisplay] = useRecoilState(editatom)
-	const handleChange = (content: string, delta: any, source: any, editor: any) => {
+	const handleChange = (content: string /* , delta: any, source: any, editor: any */) => {
 		const html = content.toString()
 		const encodedString = base64_encode(html)
-		const decodedHTML = base64_decode(encodedString)
-		console.log(encodedString, 'base64')
-		console.warn(decodedHTML, 'decoded');
-		setcontentDisplay(decodedHTML)
+		// const decodedHTML = base64_decode(encodedString)
+		// console.log(encodedString, 'base64')
+		// console.warn(decodedHTML, 'decoded');
+		setcontentDisplay(encodedString)
 	}
 
 
@@ -85,8 +94,9 @@ const Create = () => {
 
 				<ReactQuill theme="snow"
 					modules={modules}
+					name="postBody"
 					placeholder="Write something awesome..."
-					style={{ height: "300px", border: "1px solid rgba(0, 0, 0, 0.23)", borderRadius: "4px", marginTop: "1rem" }}
+					style={{ minHeight: "300px", border: "1px solid rgba(0, 0, 0, 0.23)", borderRadius: "4px", marginTop: "1rem" }}
 					className="editor"
 					onChange={handleChange}
 
@@ -99,12 +109,12 @@ const Create = () => {
 					fullWidth
 					required
 					name="postCategory"
-					defaultValue={"Personal"}
+					defaultValue={1}
 				>
-					<MenuItem value="Personal">Personal</MenuItem>
-					<MenuItem value="Food">Food</MenuItem>
-					<MenuItem value="Technology">Technology</MenuItem>
-					<MenuItem value="Travel">Travel</MenuItem>
+					<MenuItem value="1">Personal</MenuItem>
+					<MenuItem value="2">Food</MenuItem>
+					<MenuItem value="3">Technology</MenuItem>
+					<MenuItem value="4">Travel</MenuItem>
 				</TextField>
 
 

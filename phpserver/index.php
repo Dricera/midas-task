@@ -18,12 +18,29 @@ header("Access-Control-Allow-Methods: OPTIONS,GET,POST,PUT,DELETE,PATCH");
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $uri = explode( '/', $uri );
-if ((isset($uri[2]) && $uri[2] != 'user') || !isset($uri[3])) {
-    header("HTTP/1.1 404 Not Found");
-    exit();
-}
+// if ((isset($uri[2]) && $uri[2] != 'user')/* || (isset($uri[2])&& $uri[2]!='post') */  || !isset($uri[3])) {
+//     header("HTTP/1.1 404 Not Found");
+//     exit();
+// }
+
+/* require PROJECT_ROOT_PATH . "/Controller/PostController.php";
+$objFeedController = new PostController();
+
 require PROJECT_ROOT_PATH . "/Controller/UserController.php";
-$objFeedController = new UserController();
+$objFeedController = new UserController(); */
+
+
+if ($uri[2] == 'user') {
+    require PROJECT_ROOT_PATH . "/Controller/UserController.php";
+    $objFeedController = new UserController();
+}
+if ($uri[2] == 'post') {
+    require PROJECT_ROOT_PATH . "/Controller/PostController.php";
+    $objFeedController = new PostController();
+}
+
 $strMethodName = $uri[3] . 'Action';
 $objFeedController->{$strMethodName}();
+
+
 ?>
