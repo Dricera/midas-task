@@ -23,7 +23,7 @@ const Login = () => {
 				const token = JSON.parse(response.data).jwt;
 				localStorage.setItem('authToken', token);
 				
-				const decodedToken:object=setAuthToken(token)
+				const decodedToken=setAuthToken(token)
 				localStorage.setItem('user', JSON.stringify(decodedToken))
 				setAuthState(decodedToken)
 				

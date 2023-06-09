@@ -1,5 +1,5 @@
-import { Link as Nav, matchPath, useLocation, useNavigate } from "react-router-dom"
-import { Toolbar, Tabs, Tab, Typography, Grid, Link, AppBar, linkClasses } from '@mui/material/'
+import { Link as Nav, useNavigate } from "react-router-dom"
+import { Toolbar, Tab, Typography, Link, AppBar } from '@mui/material/'
 
 import { useRecoilValue, useResetRecoilState } from "recoil"
 import { authState } from "../helpers/atoms"
@@ -22,7 +22,7 @@ const Header = () => {
 		navigate('/login')
 	}
 
-	function useRouteMatch(patterns: readonly string[]) {
+	/* function useRouteMatch(patterns: readonly string[]) {
 		const { pathname } = useLocation();
 		for (let i = 0; i < patterns.length; i += 1) {
 			const pattern = patterns[i];
@@ -32,9 +32,9 @@ const Header = () => {
 			}
 		}
 		return null;
-	}
+	} */
 
-	const routeMatch = useRouteMatch(['/', '/login', '/signup', '/test', '/post/:id', '/create']);
+	// const routeMatch = useRouteMatch(['/', '/login', '/signup', '/test', '/post/:id', '/create']);
 	// const currentTab = routeMatch?.pattern?.path;
 	return (
 		<React.Fragment>

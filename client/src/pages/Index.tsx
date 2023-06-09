@@ -1,4 +1,4 @@
-import { Link as Nav, useNavigate } from "react-router-dom"
+import { Link as Nav } from "react-router-dom"
 import { Button, Card, CardActions, CardContent, Container, Divider, Grid, Link, Typography } from "@mui/material"
 import { useEffect } from "react"
 import { listPosts } from "../helpers/apis"

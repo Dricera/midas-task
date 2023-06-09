@@ -6,17 +6,14 @@ import 'react-quill/dist/quill.snow.css'
 import { atom, useRecoilState, useRecoilValue, useResetRecoilState } from "recoil"
 import { authState, postState } from "../helpers/atoms"
 import { getPostById } from "../helpers/apis"
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 
-interface ParamTypes {
-	id: string,
-}
 
 
 const Post = () => {
-	const { id } = useParams<ParamTypes>()
+	const { id } = useParams()
 
-	const currentUser: object = useRecoilValue(authState)
+	const currentUser = useRecoilValue(authState)
 
 	const postContent = atom({
 		key: 'postContent',
@@ -57,7 +54,7 @@ const Post = () => {
 			}
 		}
 		getPost()
-	}, [])
+	})
 				useResetRecoilState(postState)
 	// const unsafeString= postObject.post_content.toString()
 	// const postDecodedContent= atob(unsafeString)

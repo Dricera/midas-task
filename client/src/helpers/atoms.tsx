@@ -25,19 +25,19 @@ export const postState = atom({
 	}
 })
 
-const localStorageEffect = (key: string) => ({ setSelf, onSet }) => { 
-	const savedValue = localStorage.getItem(key)
+const localStorageEffect = (key: string) => ({ setSelf, onSet }:{setSelf:any,onSet:any}) => { 
+	const savedValue:string = localStorage.getItem(key) || ''
 	if (savedValue != null || savedValue != undefined || savedValue != '') {
 		setSelf(JSON.parse(savedValue))
 	}
-	onSet((newValue) => {
+	onSet((newValue: any) => {
 		localStorage.setItem(key, JSON.stringify(newValue))
 	})
 }
 
 export const authState = atom({
 	key: 'authState',
-	default: JSON.parse(localStorage.getItem("user"))||{},
+	default: JSON.parse(localStorage.getItem("user")||''),
 	
 	effects: [localStorageEffect('authToken')],
 

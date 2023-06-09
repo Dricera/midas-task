@@ -1,18 +1,16 @@
 // create blog post page
 //Quill
-import ReactQuill, { Quill } from "react-quill";
+import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 
 
 import { atom, useRecoilState } from "recoil"
 import { Container, Divider, Typography, TextField, Button, MenuItem } from "@mui/material"
 // import { Editor } from 'react-draft-wysiwyg';
-import { postState } from "../helpers/atoms"
 import { createPost } from "../helpers/apis"
 
 
-import parse from 'html-react-parser';
-import { encode as base64_encode, decode as base64_decode, encode } from 'base-64';
+import { encode as base64_encode } from 'base-64';
 import { useNavigate } from "react-router-dom";
 
 
@@ -26,8 +24,8 @@ const Create = () => {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		const data = new FormData(e.currentTarget)
-
-		const userData = JSON.parse(localStorage.getItem('user'))
+		const userKey:string=localStorage.getItem('userKey') || ''
+		const userData = JSON.parse(userKey)
 		const post = {
 			title: data.get('postTitle'),
 			content: contentDisplay,
@@ -39,7 +37,7 @@ const Create = () => {
 			console.log(post)
 			const response = await createPost(post)
 			console.log(response, 'response');
-			Navigate('/')
+			navigate('/')
 		} catch (error) {
 			console.log(error)
 		}
@@ -94,7 +92,7 @@ const Create = () => {
 
 				<ReactQuill theme="snow"
 					modules={modules}
-					name="postBody"
+					// name="postBody"
 					placeholder="Write something awesome..."
 					style={{ minHeight: "300px", border: "1px solid rgba(0, 0, 0, 0.23)", borderRadius: "4px", marginTop: "1rem" }}
 					className="editor"
